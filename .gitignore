@@ -7,6 +7,7 @@ internal/webui/dist/*
 *.db-wal
 *.db-shm
 .agents/logs/
+.firecrawl/
 BLOCKED.md
 DONE.md
 .env

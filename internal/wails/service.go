@@ -1,7 +1,6 @@
 //go:build !server
 
-// Package transport adapts the app to whatever is serving it: Wails desktop today,
-// HTTP/WS server mode tomorrow. Services live here, never in cmd.
+// Package wails adapts the app to the desktop shell. Services live here, never in cmd.
 package wails
 
 import (

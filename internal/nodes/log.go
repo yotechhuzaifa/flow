@@ -18,5 +18,5 @@ type If struct{}
 func (If) Type() string       { return "if" }
 func (If) OutPorts() []string { return []string{"true", "false"} }
 
-// Run is a stub: it always takes the true branch until f13 (expressions) lands.
+// Run is a stub: it always takes the true branch until the branch-expression row lands.
 func (If) Run(env *Env, cfg map[string]any) error { return nil }

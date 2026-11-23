@@ -18,7 +18,10 @@ else echo "  run: bash scripts/toolchain.sh   (installs to ~/.local/share/gotool
 
 say "wails3 cli"
 if command -v wails3 >/dev/null 2>&1; then ok "wails3 $(wails3 version 2>/dev/null | head -1)"
-else echo "  go install github.com/wailsapp/wails/v3/cmd/wails3@latest"; fi
+else
+  echo "  go install github.com/wailsapp/wails/v3/cmd/wails3@latest"
+  echo "  needs pkg-config + GTK4/WebKitGTK headers; the headless path does not"
+fi
 
 say "opencode"
 if command -v opencode >/dev/null 2>&1; then
@@ -61,6 +64,9 @@ cat <<'NEXT'
 
 Next:
   bash scripts/toolchain.sh     # if go is missing
-  make dev                      # native window, hot reload
+  npm install && npm --prefix frontend ci
+  make check                    # headless gate
+  make e2e                      # parity suite (starts Vite)
+  make dev                      # native window — needs wails3, build/ assets and GTK4/WebKitGTK
   opencode  →  /start           # or ./scripts/loop.sh for unattended
 NEXT

@@ -1,8 +1,8 @@
 /**
  * f01 — the app renders the canvas.
  *
- * Runs in server mode: `npm run dev` (vite) talks to `cmd/server` over /api and /events.
- * Locally: BASE_URL=http://localhost:5173 npx playwright test
+ * Runs against the Vite dev server (started by playwright.config.ts). The canvas and palette
+ * render without a backend; persistence and live runs are added by later rows.
  */
 import { expect, test } from "@playwright/test"
 
