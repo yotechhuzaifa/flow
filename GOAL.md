@@ -2,7 +2,7 @@
 
 A desktop app where a user can build and run a flow on a canvas.
 
-- Drag node types from a palette onto a canvas
+- Select node types from a palette and place them on the canvas
 - Connect node ports with edges
 - Save a flow and reopen it after restart
 - Run a flow and watch each node's status change live
