@@ -1,0 +1,18 @@
+{
+  "$schema": "http://json-schema.org/draft-07/schema#",
+  "title": "Extracted feature",
+  "type": "object",
+  "required": ["id", "trigger", "observable", "priority", "evidence"],
+  "additionalProperties": false,
+  "properties": {
+    "id": { "type": "string" },
+    "trigger": { "type": "string" },
+    "observable": { "type": "string" },
+    "preconditions": { "type": "array", "items": { "type": "string" } },
+    "errors": { "type": "array", "items": { "type": "string" } },
+    "wire": { "type": "array", "items": { "type": "string" } },
+    "priority": { "enum": ["must", "should", "could", "wont"] },
+    "evidence": { "type": "array", "minItems": 1, "items": { "type": "string" } },
+    "unsure": { "type": "array", "items": { "type": "string" } }
+  }
+}

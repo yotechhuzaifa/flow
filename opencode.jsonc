@@ -1,0 +1,84 @@
+{
+  "$schema": "https://opencode.ai/config.json",
+
+  "model": "opencode-go/deepseek-v4.1-flash",
+  "default_agent": "build",
+
+  "instructions": ["AGENTS.md"],
+
+  "permissions": [
+    { "action": "shell", "resource": "git push *", "effect": "ask" },
+    { "action": "shell", "resource": "rm -rf *", "effect": "deny" },
+    { "action": "edit", "resource": "scripts/dod.sh", "effect": "deny" },
+    { "action": "edit", "resource": "scripts/check.sh", "effect": "deny" },
+    { "action": "edit", "resource": "parity.csv", "effect": "deny" },
+    { "action": "edit", "resource": "docs/CONTRACT.md", "effect": "ask" },
+  ],
+
+  "agents": {
+    "build": {
+      "description": "Implementer. Works one parity row at a time inside the frozen contract.",
+      "mode": "primary",
+      "steps": 40,
+    },
+    "re-observer": {
+      "description": "Researches the target product and writes spec files. Never writes app code.",
+      "mode": "subagent",
+      "steps": 40,
+      "permissions": [
+        { "action": "edit", "resource": "*", "effect": "deny" },
+        { "action": "edit", "resource": "spec/**", "effect": "allow" },
+        { "action": "edit", "resource": "traces/**", "effect": "allow" },
+      ],
+    },
+    "spec-auditor": {
+      "description": "Adversary: tries to make dod.sh pass without the feature working.",
+      "mode": "subagent",
+      "steps": 20,
+      "model": "opencode-go/glm-5.3#high",
+      "permissions": [
+        { "action": "edit", "resource": "*", "effect": "deny" },
+        { "action": "edit", "resource": "tests/parity/**", "effect": "allow" },
+      ],
+    },
+  },
+
+  "mcp": {
+    "servers": {
+      "firecrawl": {
+        "type": "remote",
+        "url": "https://mcp.firecrawl.dev/v2/mcp-oauth",
+      },
+      "playwright": {
+        "type": "local",
+        "command": [
+          "npx",
+          "-y",
+          "@playwright/mcp@latest",
+          "--headless",
+          "--caps",
+          "network,console,testing",
+        ],
+      },
+      "context7": {
+        "type": "remote",
+        "url": "https://mcp.context7.com/mcp",
+      },
+    },
+  },
+
+  "plugins": ["./.opencode/plugins/model-router.ts"],
+
+  "compaction": { "auto": true, "keep": { "tokens": 12000 } },
+
+  "experimental": { "todo": true, "location_idle_timeout": "4 hours" },
+
+  "watcher": {
+    "ignore": [
+      "node_modules/**",
+      "dist/**",
+      "build/**",
+      "frontend/bindings/**",
+    ],
+  },
+}

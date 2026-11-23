@@ -1,0 +1,21 @@
+id,feature,priority,depends_on,effort,status
+f01,Window opens on Windows macOS and Linux and renders the canvas,MUST,,todo
+f02,Drag a node from the palette onto the canvas,MUST,f01,todo
+f03,Connect a declared output port to a target port with an edge,MUST,f02,todo
+f04,Self edges and cycles are rejected,MUST,f03,todo
+f05,Delete a node and its edges,MUST,f03,todo
+f06,Moving a node persists its position,MUST,f02,todo
+f07,Flow autosaves and reloads after a restart,MUST,f06,todo
+f08,Delete a flow from the list,MUST,f07,todo
+f09,Run starts and nodes execute in topological order,MUST,f03,todo
+f10,Node status updates live during a run,MUST,f09,todo
+f11,Send node performs an HTTP request with its config,MUST,f02,todo
+f12,Failing node shows an error and skips descendants,MUST,f11,todo
+f13,Canvas pan and zoom,SHOULD,f01,todo
+f14,Undo and redo for canvas edits,SHOULD,f03,todo
+f15,Variable interpolation resolves at run time,SHOULD,f09,todo
+f16,Export the current flow as JSON,COULD,f07,todo
+f17,Multi-select and box select,COULD,f03,todo
+f18,Minimap,COULD,f13,todo
+f19,Server mode serves the same app without a webview,SHOULD,f01,todo
+f20,Multi-window,WONT,,todo
