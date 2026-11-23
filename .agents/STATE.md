@@ -20,6 +20,7 @@ Append-only. Newest at the bottom.
 | 7 | contract decision | `git diff HEAD -- GOAL.md parity.csv` · `bash scripts/check.sh` | pass | Human owner accepted CP-07 and CP-08. `GOAL.md` and f02 now use select-and-place; `p01`–`p11` merged into `parity.csv`. CP-08 keeps the internal event names and maps the target states in the UI. CP-01–CP-06 remain unapproved. |
 | 8 | live builder round 2 | `node scripts/spec.mjs check` · `propose` · `plan` | pass | Captured Run→Stop control, Delay config clamping, an unconfigured HTTP block entering `error`, move undo, and a partial box-select. Added 4 features (`p12`–`p15`). `propose` now lists only rows not already in `parity.csv`. G-07 remains partial; G-12–G-14 not attempted. |
 | 9 | live builder round 3 | `node scripts/spec.mjs check` · `propose` · `plan` | pass | Confirmed edge deletion by midpoint control: four edges to three, then five to four, with no confirmation dialog. Added `edge.delete` (`p16`). Reconnect and connected-block deletion remain open. |
+| 10 | live builder round 4 | `node scripts/spec.mjs check` · `bash scripts/check.sh` | pass | Autosave cadence is not exposed as a separate HTTP save; reload persistence is already covered. Ctrl+click selected only one node; no Group action. Cross-flow copy/paste is unobservable: workspace offline and only one flow. Limits and variable precedence need dedicated setups. No new features. |
 
 ## Known gaps (setup audit, not fixed here)
 - Desktop build needs the Wails v3 `build/` assets, which are not vendored. `wails3` cannot install on a

@@ -26,12 +26,12 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
 | G-06 | Run concurrency, stop, re-run, edit during run | should | covered by `run-concurrency.jsonl` and `run-stop.jsonl` |
 | G-07 | Failure propagation and skipped descendants | must | partial: unconfigured HTTP error observed; `failure-propagation.jsonl` |
 | G-08 | Status vocabulary and transition timing | must | covered by `traces/live-builder/status-timeline.jsonl` |
-| G-09 | Autosave cadence, crash recovery, reload | must | partial: reload covered by `traces/live-builder/reload.jsonl` |
+| G-09 | Autosave cadence, crash recovery, reload | must | partial: reload covered; cadence not exposed as a save request |
 | G-10 | Undo/redo scope | should | partial: move undo covered; `traces/live-builder/undo-redo.jsonl` |
-| G-11 | Multi-select, box select, group/ungroup | could | partial: box select observed; `traces/live-builder/multiselect.jsonl` |
-| G-12 | Limits: blocks, edges, run duration, >20 requests | should | needs live builder |
-| G-13 | Variable precedence and interpolation | should | needs live builder |
-| G-14 | Copy/paste across flows: ids, positions, config | could | needs live builder |
+| G-11 | Multi-select, box select, group/ungroup | could | partial: box select observed; modifier multi-select/group not confirmed |
+| G-12 | Limits: blocks, edges, run duration, >20 requests | should | not attempted: needs a stress matrix |
+| G-13 | Variable precedence and interpolation | should | not attempted: needs variable setup |
+| G-14 | Copy/paste across flows: ids, positions, config | could | unobservable, reason: workspace offline; only one flow available |
 | G-15 | Public example read-only layout | info | covered by `traces/public-delay/` |
 
 ## G-01 — Palette order, search, filter, category expansion
@@ -156,7 +156,10 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
   a reload restores the exact viewport.
 - Scenario: add/move/configure a block; wait; reload; kill the process and reopen.
 - Capture: `network` save calls with timestamps; reload result.
-- Status: `needs live builder`.
+- Status: partial. `traces/live-builder/reload.jsonl` proves the edit persisted across a reload.
+  `traces/live-builder/autosave-cadence.jsonl` found no distinct save HTTP request in the five
+  seconds after an edit; the app likely saves over its existing connection or debounces longer.
+  Crash recovery was not tested.
 
 ## G-10 — Undo/redo scope
 
@@ -167,8 +170,9 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
 - Capture: `steps` diff; available shortcuts.
 - Status: partial. `traces/live-builder/undo-redo.jsonl` shows Ctrl+Z restoring a moved block to
   its previous position. Ctrl+Shift+Z re-applied an intermediate move rather than the exact
-  final position, so redo needs a cleaner multi-step test. Add, delete, connect, config, and
-  reload survival are not covered yet.
+  final position, so redo needs a cleaner multi-step test. Ctrl+Z also restored an edge after
+  midpoint deletion, but the edge count was noisy. Add, connect, config, and reload survival are
+  not covered yet.
 
 ## G-11 — Multi-select, box select, group/ungroup
 
@@ -180,8 +184,10 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
 - Scenario: box-select two blocks, group, move, ungroup, copy the group.
 - Capture: `dom`/`a11y`; selection counts.
 - Status: partial. `traces/live-builder/multiselect.jsonl` shows a drag-selection gesture
-  selecting one block; no Group action was exposed in the toolbar. The gesture needs a cleaner
-  start point and a second pass for group/ungroup and cross-feature copy/paste.
+  selecting one block; no Group action was exposed in the toolbar. `traces/live-builder/group.jsonl`
+  shows Ctrl+click selecting only one node, with no Group action in the context menu. The
+  gesture needs a cleaner start point and a second pass for group/ungroup and cross-feature
+  copy/paste.
 
 ## G-12 — Limits: blocks, edges, run duration, request count
 
@@ -193,7 +199,8 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
 - Scenario: build a flow with N blocks and N requests; run; record the first failure point.
   Treat the community report as a hypothesis, not a limit.
 - Capture: `network` errors, console errors, run summary.
-- Status: `needs live builder`.
+- Status: not attempted. This needs a generated stress flow and multiple runs; it is not a
+  single-observation gap.
 
 ## G-13 — Variable precedence and interpolation
 
@@ -203,7 +210,8 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
   resolution time, and whether a missing variable fails the run or resolves empty.
 - Scenario: define the same name in two scopes; run; remove the variable; run again.
 - Capture: resolved request values and error state.
-- Status: `needs live builder`.
+- Status: not attempted. It needs flow/environment/collection variables set up before the
+  precedence can be observed.
 
 ## G-14 — Copy/paste across flows: ids, positions, config
 
@@ -214,7 +222,8 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
 - Scenario: copy two connected blocks from flow A to flow B; inspect ids, positions, edges, and
   config.
 - Capture: `network` payloads if available; otherwise `dom`/`a11y`.
-- Status: `needs live builder`.
+- Status: `unobservable, reason: the workspace reported offline and only one flow was
+  available; creating a second flow did not succeed`.
 
 ## G-15 — Public example read-only layout
 

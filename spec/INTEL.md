@@ -234,8 +234,15 @@ Evidence: `traces/live-builder/`.
 - **Edge deletion.** Clicking the control at a connection’s midpoint removes the edge
   immediately, with no confirmation dialog. Endpoint reconnect and deleting a connected block
   remain open.
-- G-07 is partially observed; G-12 (limits), G-13 (variable precedence), and G-14 (cross-flow
-  copy/paste) were not attempted.
+- **Autosave.** No distinct save HTTP request appeared in the five seconds after an edit; the
+  app likely saves over its existing connection or debounces longer. Persistence across reload
+  is proven.
+- **Multi-select.** Ctrl+click selected only one node, and no Group action appeared in the
+  context menu. Box selection selected one node. Group/ungroup remains unobserved.
+- **Cross-flow copy/paste.** The workspace reported offline and only one flow was available;
+  creating a second flow did not succeed. The gap is `unobservable` in this session.
+- G-07 is partially observed. G-12 (limits) and G-13 (variable precedence) need dedicated
+  stress/variable setups and were not attempted.
 
 ## Source log
 
