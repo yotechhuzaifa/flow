@@ -169,7 +169,8 @@ function cmdPropose() {
     return check
   }
   const { features } = readFeatures()
-  const used = new Set(readParity().map((r) => r.id))
+  const merged = new Set(readParity().map((r) => r.id))
+  const used = new Set(merged)
   const map = readMap()
   const mapped = new Set(Object.values(map))
   let n = 0
@@ -184,13 +185,15 @@ function cmdPropose() {
   }
 
   const header = "id,feature,priority,depends_on,effort,status"
-  const rows = Object.entries(map).map(([id, featureId]) => {
-    const f = features.find((x) => x.id === featureId)
-    // dod.sh parses parity.csv with awk -F','. Keep the feature column comma-free so every
-    // MUST row is counted, including rows whose prose would otherwise need CSV quoting.
-    const feature = String(f.observable).replace(/,/g, ";").replace(/\s+/g, " ").trim()
-    return [id, feature, f.priority.toUpperCase(), "", "", "todo"].map(csvEscape).join(",")
-  })
+  const rows = Object.entries(map)
+    .filter(([id]) => !merged.has(id))
+    .map(([id, featureId]) => {
+      const f = features.find((x) => x.id === featureId)
+      // dod.sh parses parity.csv with awk -F','. Keep the feature column comma-free so every
+      // MUST row is counted, including rows whose prose would otherwise need CSV quoting.
+      const feature = String(f.observable).replace(/,/g, ";").replace(/\s+/g, " ").trim()
+      return [id, feature, f.priority.toUpperCase(), "", "", "todo"].map(csvEscape).join(",")
+    })
   writeFileSync(PROPOSED, [header, ...rows].join("\n") + "\n")
   writeFileSync(MAP, JSON.stringify(map, null, 2) + "\n")
   console.log(`spec: wrote ${relative(root, PROPOSED)} (${rows.length} row(s))`)
