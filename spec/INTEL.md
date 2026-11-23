@@ -211,8 +211,28 @@ Evidence: `traces/live-builder/`.
   including input, output, tests, evals, and further details.
 - A reload preserved the added Delay block and four edges, so the flow autosaved before the
   reload completed. The exact debounce interval was not measured.
-- A happy-path HTTP run completed successfully (about 2–3 s). Failure propagation and skipped
-  descendants were not forced, so `GAPS.md` G-07 remains open.
+- A happy-path HTTP run completed successfully (about 2–3 s).
+
+### Live builder, round 2
+
+- **Run control.** During a run the Run action becomes Stop, so there is no second Run to click.
+  Pressing Stop returns the action to Run; the in-flight block switches to `success` and
+  downstream blocks stay `inactive`. The target does not expose a separate cancelled or failed
+  state for a stopped block.
+- **Config clamp.** The Delay field rejects negative and empty input and falls back to 0, with
+  no error state. The HTTP request editor was hidden and the workspace reported offline, so
+  required-field and invalid-URL validation on HTTP Request remain unobserved.
+- **Failure.** An HTTP Request block with no request selected entered the `error` state while
+  the rest of the flow still ran. The downstream Display connected to its Success port stayed
+  `inactive` before the run but disappeared when the run started, so the skip path is not clean
+  enough for a feature line. A configured request returning a non-2xx is still needed.
+- **Undo/redo.** Ctrl+Z restored a moved block to its previous position. Ctrl+Shift+Z re-applied
+  an intermediate move rather than the exact final position; redo needs a cleaner multi-step
+  test. Add, delete, connect, and config undo are not covered.
+- **Multi-select.** A drag-selection gesture selected one block; no Group action was exposed in
+  the toolbar. Group/ungroup and cross-flow copy/paste remain open.
+- G-07 is partially observed; G-12 (limits), G-13 (variable precedence), and G-14 (cross-flow
+  copy/paste) were not attempted.
 
 ## Source log
 

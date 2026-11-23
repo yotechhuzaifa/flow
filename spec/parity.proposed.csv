@@ -1,12 +1,1 @@
 id,feature,priority,depends_on,effort,status
-p01,the palette shows nine grouped categories in order: Primitives; Connectors; AI; Logic; Looping; Visualize; Outputs; Data; Other,MUST,,,todo
-p02,searching for delay returns Logic > Delay plus a Suggested String block; and a nonsense query still suggests a String block rather than showing an empty state,MUST,,,todo
-p03,pressing Escape closes the palette,COULD,,,todo
-p04,the palette closes and the block is placed at the clicked canvas position,MUST,,,todo
-p05,dragging from a palette item does not place a block; the select-then-click path is required,SHOULD,,,todo
-p06,a connection preview appears during the drag; but no self-edge is added and no error toast appears,MUST,,,todo
-p07,repeating an existing connection leaves the edge count unchanged and shows no error toast,MUST,,,todo
-p08,connecting a downstream block back to an upstream input leaves the edge count unchanged and shows no error toast,MUST,,,todo
-p09,blocks move from inactive to execution to success; Start reaches success first; then the HTTP block stays in execution until it completes and the downstream blocks mark success,MUST,,,todo
-p10,the pane lists each block with its start time and duration and lets you select a block for details,MUST,,,todo
-p11,the added block and edges are still present after the reload,MUST,,,todo

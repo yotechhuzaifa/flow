@@ -22,13 +22,13 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
 | G-02 | Add-block placement feedback and cancel | must | covered by `traces/live-builder/add-block.jsonl` |
 | G-03 | Connection rejection rules and error feedback | must | partial: self/duplicate/cycle covered by `connections-clean.jsonl` |
 | G-04 | Edge select, delete, reconnect | must | needs live builder |
-| G-05 | Config validation, required fields, save timing | must | needs live builder |
-| G-06 | Run concurrency, stop, re-run, edit during run | should | needs live builder |
-| G-07 | Failure propagation and skipped descendants | must | not yet forced; happy path observed |
+| G-05 | Config validation, required fields, save timing | must | partial: Delay clamps invalid input; `traces/live-builder/config-validation.jsonl` |
+| G-06 | Run concurrency, stop, re-run, edit during run | should | covered by `run-concurrency.jsonl` and `run-stop.jsonl` |
+| G-07 | Failure propagation and skipped descendants | must | partial: unconfigured HTTP error observed; `failure-propagation.jsonl` |
 | G-08 | Status vocabulary and transition timing | must | covered by `traces/live-builder/status-timeline.jsonl` |
 | G-09 | Autosave cadence, crash recovery, reload | must | partial: reload covered by `traces/live-builder/reload.jsonl` |
-| G-10 | Undo/redo scope | should | needs live builder |
-| G-11 | Multi-select, box select, group/ungroup | could | needs live builder |
+| G-10 | Undo/redo scope | should | partial: move undo covered; `traces/live-builder/undo-redo.jsonl` |
+| G-11 | Multi-select, box select, group/ungroup | could | partial: box select observed; `traces/live-builder/multiselect.jsonl` |
 | G-12 | Limits: blocks, edges, run duration, >20 requests | should | needs live builder |
 | G-13 | Variable precedence and interpolation | should | needs live builder |
 | G-14 | Copy/paste across flows: ids, positions, config | could | needs live builder |
@@ -98,7 +98,10 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
   debounce/save timing, and whether closing the panel discards an edit.
 - Scenario: clear a required field, enter an invalid URL, close and reopen the block, reload.
 - Capture: `dom`/`a11y` for error text; `network` for save calls.
-- Status: `needs live builder`.
+- Status: partial. `traces/live-builder/config-validation.jsonl` shows the Delay field rejecting
+  negative and empty input and falling back to 0, with no error state. The HTTP request editor
+  was hidden and the workspace reported offline, so required-field and invalid-URL validation
+  on HTTP Request were not observed.
 
 ## G-06 — Run concurrency, stop, re-run, edit during run
 
@@ -108,7 +111,10 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
   a run is allowed, and whether a second run queues or replaces the first.
 - Scenario: run a slow flow; press Run again; try to stop; edit a block mid-run.
 - Capture: `steps` timestamps, button disabled states, status changes.
-- Status: `needs live builder`.
+- Status: covered by `traces/live-builder/run-concurrency.jsonl` and `run-stop.jsonl`. During a
+  run the Run action becomes Stop, so there is no second Run to click. Pressing Stop returns the
+  action to Run; the in-flight block switches to `success` and downstream blocks stay
+  `inactive`. Editing during a run was not tested.
 
 ## G-07 — Failure propagation and skipped descendants
 
@@ -119,7 +125,11 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
 - Scenario: force a non-2xx response; watch the block and every downstream block; repeat with
   Fail unconnected.
 - Capture: per-block status over time; run summary.
-- Status: `needs live builder`.
+- Status: partial. `traces/live-builder/failure-propagation.jsonl` shows an HTTP Request block
+  with no request selected entering `error` while the rest of the flow still ran. The downstream
+  block connected to its Success port remained `inactive` before the run, but it disappeared
+  when the run started, so the skip path is not clean enough for a feature line. A configured
+  request returning a non-2xx is still needed.
 
 ## G-08 — Status vocabulary and transition timing
 
@@ -153,7 +163,10 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
   the stack survives reload.
 - Scenario: perform each edit type, undo/redo each, then reload and undo.
 - Capture: `steps` diff; available shortcuts.
-- Status: `needs live builder`.
+- Status: partial. `traces/live-builder/undo-redo.jsonl` shows Ctrl+Z restoring a moved block to
+  its previous position. Ctrl+Shift+Z re-applied an intermediate move rather than the exact
+  final position, so redo needs a cleaner multi-step test. Add, delete, connect, config, and
+  reload survival are not covered yet.
 
 ## G-11 — Multi-select, box select, group/ungroup
 
@@ -164,7 +177,9 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
   membership survives copy/paste.
 - Scenario: box-select two blocks, group, move, ungroup, copy the group.
 - Capture: `dom`/`a11y`; selection counts.
-- Status: `needs live builder`.
+- Status: partial. `traces/live-builder/multiselect.jsonl` shows a drag-selection gesture
+  selecting one block; no Group action was exposed in the toolbar. The gesture needs a cleaner
+  start point and a second pass for group/ungroup and cross-feature copy/paste.
 
 ## G-12 — Limits: blocks, edges, run duration, request count
 
@@ -214,6 +229,10 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
 
 ## Next observation session
 
-Take G-01, G-02, and G-03 first. They need the live builder. A human must sign in to a dedicated
-Postman account; the agent must not bypass authentication. If no account is available, do G-15
-only and mark G-01–G-03 `unobservable, reason: no authorized account`.
+G-01, G-02, G-06, G-08, G-09 (reload), and G-15 are covered. G-03, G-05, G-07, G-09 (cadence),
+G-10, and G-11 are partial.
+
+Next: G-04 (edge select/delete/reconnect), then G-12–G-14 (limits, variable precedence,
+cross-flow copy/paste). G-07 needs a configured request that returns a non-2xx; the current
+flow’s request editor is hidden and the workspace reports offline. A fresh flow or a reconnected
+session should clear that. The agent must not bypass authentication.

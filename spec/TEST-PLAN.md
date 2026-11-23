@@ -166,3 +166,63 @@ Checklist:
 - [ ] Every expected error exercised
 - [ ] Every interactive element has a `data-testid`
 - [ ] `spec-auditor` cannot make it pass without the feature
+
+## run.control.stop — must
+
+- Parity row: `p12` (proposed)
+- Observable: the Run action changes to Stop; pressing Stop returns it to Run and leaves the in-flight block at success while downstream blocks stay inactive
+- Trigger: press the Run action while a run is in progress
+- Evidence: traces/live-builder/run-stop.jsonl#1, traces/live-builder/run-stop.jsonl#2
+
+Checklist:
+- [ ] Playwright test under `tests/parity/`
+- [ ] One assertion per observable outcome
+- [ ] Preconditions set up explicitly
+- [ ] Every expected error exercised
+- [ ] Every interactive element has a `data-testid`
+- [ ] `spec-auditor` cannot make it pass without the feature
+
+## block.config.clamp — should
+
+- Parity row: `p13` (proposed)
+- Observable: the field falls back to 0 and the block does not enter an error state
+- Trigger: enter a negative or empty value in the Delay field
+- Evidence: traces/live-builder/config-validation.jsonl#2, traces/live-builder/config-validation.jsonl#3
+
+Checklist:
+- [ ] Playwright test under `tests/parity/`
+- [ ] One assertion per observable outcome
+- [ ] Preconditions set up explicitly
+- [ ] Every expected error exercised
+- [ ] Every interactive element has a `data-testid`
+- [ ] `spec-auditor` cannot make it pass without the feature
+
+## connection.error.node — must
+
+- Parity row: `p14` (proposed)
+- Observable: that block shows an error state while the rest of the flow still runs
+- Trigger: run a flow containing an HTTP Request block with no request selected
+- Evidence: traces/live-builder/failure-propagation.jsonl#2
+
+Checklist:
+- [ ] Playwright test under `tests/parity/`
+- [ ] One assertion per observable outcome
+- [ ] Preconditions set up explicitly
+- [ ] Every expected error exercised
+- [ ] Every interactive element has a `data-testid`
+- [ ] `spec-auditor` cannot make it pass without the feature
+
+## undo.move — should
+
+- Parity row: `p15` (proposed)
+- Observable: the block returns to its previous position
+- Trigger: move a block and press Ctrl+Z
+- Evidence: traces/live-builder/undo-redo.jsonl#3
+
+Checklist:
+- [ ] Playwright test under `tests/parity/`
+- [ ] One assertion per observable outcome
+- [ ] Preconditions set up explicitly
+- [ ] Every expected error exercised
+- [ ] Every interactive element has a `data-testid`
+- [ ] `spec-auditor` cannot make it pass without the feature

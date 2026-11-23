@@ -30,3 +30,7 @@ p08,connecting a downstream block back to an upstream input leaves the edge coun
 p09,blocks move from inactive to execution to success; Start reaches success first; then the HTTP block stays in execution until it completes and the downstream blocks mark success,MUST,,,todo
 p10,the pane lists each block with its start time and duration and lets you select a block for details,MUST,,,todo
 p11,the added block and edges are still present after the reload,MUST,,,todo
+p12,the Run action changes to Stop; pressing Stop returns it to Run and leaves the in-flight block at success while downstream blocks stay inactive,MUST,,,todo
+p13,the field falls back to 0 and the block does not enter an error state,SHOULD,,,todo
+p14,that block shows an error state while the rest of the flow still runs,MUST,,,todo
+p15,the block returns to its previous position,SHOULD,,,todo
