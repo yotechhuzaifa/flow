@@ -231,6 +231,9 @@ Evidence: `traces/live-builder/`.
   test. Add, delete, connect, and config undo are not covered.
 - **Multi-select.** A drag-selection gesture selected one block; no Group action was exposed in
   the toolbar. Group/ungroup and cross-flow copy/paste remain open.
+- **Edge deletion.** Clicking the control at a connection’s midpoint removes the edge
+  immediately, with no confirmation dialog. Endpoint reconnect and deleting a connected block
+  remain open.
 - G-07 is partially observed; G-12 (limits), G-13 (variable precedence), and G-14 (cross-flow
   copy/paste) were not attempted.
 

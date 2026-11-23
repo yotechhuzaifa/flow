@@ -226,3 +226,18 @@ Checklist:
 - [ ] Every expected error exercised
 - [ ] Every interactive element has a `data-testid`
 - [ ] `spec-auditor` cannot make it pass without the feature
+
+## edge.delete — must
+
+- Parity row: `p16` (proposed)
+- Observable: the connection is removed immediately and no confirmation dialog appears
+- Trigger: click the midpoint control on a connection
+- Evidence: traces/live-builder/edge-delete-clean.jsonl#1
+
+Checklist:
+- [ ] Playwright test under `tests/parity/`
+- [ ] One assertion per observable outcome
+- [ ] Preconditions set up explicitly
+- [ ] Every expected error exercised
+- [ ] Every interactive element has a `data-testid`
+- [ ] `spec-auditor` cannot make it pass without the feature

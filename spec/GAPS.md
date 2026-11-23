@@ -21,7 +21,7 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
 | G-01 | Palette order, search, filter, category expansion | must | covered by `traces/live-builder/palette.jsonl` |
 | G-02 | Add-block placement feedback and cancel | must | covered by `traces/live-builder/add-block.jsonl` |
 | G-03 | Connection rejection rules and error feedback | must | partial: self/duplicate/cycle covered by `connections-clean.jsonl` |
-| G-04 | Edge select, delete, reconnect | must | needs live builder |
+| G-04 | Edge select, delete, reconnect | must | partial: midpoint delete observed; `traces/live-builder/edge-delete-clean.jsonl` |
 | G-05 | Config validation, required fields, save timing | must | partial: Delay clamps invalid input; `traces/live-builder/config-validation.jsonl` |
 | G-06 | Run concurrency, stop, re-run, edit during run | should | covered by `run-concurrency.jsonl` and `run-stop.jsonl` |
 | G-07 | Failure propagation and skipped descendants | must | partial: unconfigured HTTP error observed; `failure-propagation.jsonl` |
@@ -87,7 +87,9 @@ Snippets can confirm layout and vocabulary, but not editing, connection rejectio
 - Scenario: select an edge, delete it; drag one endpoint to another port; delete a connected
   block.
 - Capture: `dom`/`a11y` before and after; `network` if edges are persisted.
-- Status: `needs live builder`.
+- Status: partial. `traces/live-builder/edge-delete-clean.jsonl` shows that clicking the control
+  at a connection’s midpoint removes the edge immediately, with no confirmation dialog. Edge
+  selection styling, endpoint reconnect, and deleting a connected block are not covered.
 
 ## G-05 — Config validation, required fields, save timing
 

@@ -13,5 +13,6 @@
   "p12": "run.control.stop",
   "p13": "block.config.clamp",
   "p14": "connection.error.node",
-  "p15": "undo.move"
+  "p15": "undo.move",
+  "p16": "edge.delete"
 }
