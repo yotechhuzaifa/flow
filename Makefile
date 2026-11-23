@@ -1,6 +1,6 @@
 # Thin wrapper over wails3 + npm. The Wails build system stays authoritative;
 # these targets are the ones the agent and CI use.
-.PHONY: help setup dev bind build build-server test check e2e package clean doctor webui
+.PHONY: help setup dev bind build build-server test check e2e package clean doctor webui spec research
 
 APP      := flow
 BIN      := bin
@@ -37,6 +37,12 @@ webui:           ## build the frontend and sync it into internal/webui/dist
 e2e:             ## parity suite (starts vite; run npm install once at the repo root)
 	npm --prefix frontend run -s build
 	npx playwright test
+
+spec:            ## validate research output, propose rows, write the test plan
+	node scripts/spec.mjs all
+
+research:        ## one research cycle (needs the url: line in spec/TARGET.md)
+	bash scripts/research.sh
 
 package:         ## native installers for the current OS
 	wails3 task package

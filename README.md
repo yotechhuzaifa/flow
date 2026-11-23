@@ -43,7 +43,8 @@ frontend/src/features/   canvas · nodes · runs
 frontend/src/shared/     types (mirrors CONTRACT) · api client · hooks
 build/                   Wails v3 build assets — not vendored yet (see docs/platform-setup.md)
 scripts/                 toolchain · setup · check · dod · loop · sync-webui
-docs/                    ARCHITECTURE · CONTRACT · SCALE · platform-setup
+docs/                    ARCHITECTURE · CONTRACT · SCALE · RESEARCH · platform-setup
+spec/                    target, features.jsonl, parity proposals, test plan, audit
 parity.csv               the work queue (12 MUST rows)
 ```
 
@@ -57,7 +58,22 @@ parity.csv               the work queue (12 MUST rows)
 | `make build` / `make package` | binary / native installer for the host OS (needs Wails assets) |
 | `make build-server` | headless HTTP build for CI and parity tests |
 | `make e2e` | parity suite |
+| `make spec` | validate research, propose rows, write the test plan |
+| `bash scripts/research.sh` | one research cycle (needs `spec/TARGET.md`) |
 | `make cross-win` `cross-linux` `cross-mac` | cross-compile (Windows needs no cgo) |
+
+## Research
+
+The build loop starts at `parity.csv`. The research loop starts at `spec/TARGET.md`.
+
+1. Fill `url:` in `spec/TARGET.md` once.
+2. `bash scripts/research.sh` — intel, traces, features, proposals, test plan.
+3. A human merges accepted rows from `spec/parity.proposed.csv` into `parity.csv` in a
+   `[contract]` commit. This is the only mandatory gate.
+4. `./scripts/loop.sh` builds until `dod.sh` is green.
+
+`docs/RESEARCH.md` explains the six layers, the open-source references, and the guardrails.
+`scripts/spec.mjs` is the compiler: `check` → `propose` → `plan` → `audit`.
 
 ## Rules the codebase enforces
 

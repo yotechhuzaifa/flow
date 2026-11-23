@@ -19,3 +19,5 @@ playwright-report/
 .DS_Store
 go.work
 go.work.sum
+.deja
+.playwright-mcp/

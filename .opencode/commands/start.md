@@ -9,8 +9,9 @@ You are starting a fresh session on this repo. Do this in order. Do not skip ste
    `docs/CONTRACT.md`. Do not change any of them.
 
 2. Research, if `spec/features.jsonl` does not exist or is empty:
-   read the `grabbing-flows` skill, then do exactly one scenario and one extraction pass.
-   Write `spec/features.jsonl` with evidence paths. Then continue to step 3 without asking.
+   read `docs/RESEARCH.md` and the `grabbing-flows` skill, then do exactly one scenario and
+   one extraction pass. Write `spec/features.jsonl` with evidence paths, run
+   `node scripts/spec.mjs check`, then continue to step 3 without asking.
 
 3. Confirm the scaffold, if `./scripts/check.sh` is red. It is already laid out; do not rewrite it:
    - `cmd/app` desktop entry, `cmd/server` headless entry (`-tags server`)
@@ -30,7 +31,9 @@ You are starting a fresh session on this repo. Do this in order. Do not skip ste
    - take the highest `MUST` row with status `todo`
    - write the plan in `.agents/STATE.md`
    - implement the smallest change that makes it pass
-   - `./scripts/check.sh`, then mark the row `pass` and commit
+   - `./scripts/check.sh`; if `spec/features.jsonl` exists, `node scripts/spec.mjs audit`
+   - spawn `spec-auditor` for the row; if it can fake a pass, fix the test or the feature
+   - mark the row `pass` and commit
    - repeat until `./scripts/dod.sh` exits 0
 
 Rules: one row at a time, no refactors, never weaken a test, never edit frozen files.

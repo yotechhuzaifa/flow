@@ -3,7 +3,12 @@
   "private": true,
   "type": "module",
   "scripts": {
-    "e2e": "playwright test"
+    "e2e": "playwright test",
+    "spec:check": "node scripts/spec.mjs check",
+    "spec:propose": "node scripts/spec.mjs propose",
+    "spec:plan": "node scripts/spec.mjs plan",
+    "spec:audit": "node scripts/spec.mjs audit",
+    "spec": "node scripts/spec.mjs all"
   },
   "devDependencies": {
     "@playwright/test": "^1.65.1"

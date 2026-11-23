@@ -55,6 +55,8 @@
           "npx",
           "-y",
           "@playwright/mcp@latest",
+          "--browser",
+          "chromium",
           "--headless",
           "--caps",
           "network,console,testing",

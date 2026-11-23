@@ -1,0 +1,13 @@
+{
+  "p01": "palette.categories",
+  "p02": "palette.search",
+  "p03": "palette.escape",
+  "p04": "block.add.click-place",
+  "p05": "block.add.no-drag",
+  "p06": "connection.self.reject",
+  "p07": "connection.duplicate.reject",
+  "p08": "connection.cycle.reject",
+  "p09": "run.status.timeline",
+  "p10": "run.logs.summary",
+  "p11": "flow.autosave.reload"
+}
